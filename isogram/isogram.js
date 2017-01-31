@@ -4,23 +4,13 @@ class Isogram {
   }
 
   isIsogram() {
-    let result = true;
-    const letterCounts = this.letterCounts();
+    let letters = [];
 
-    Object.keys(letterCounts).forEach((count) => {
-      if (letterCounts[count] !== 1) {
-        result = false;
-      }
+    return this.word.split('').every((letter) => {
+      let result = !letters.includes(letter);
+      letters.push(letter);
+      return result;
     });
-
-    return result;
-  }
-
-  letterCounts() {
-    return this.word.split('').reduce((map, letter) => {
-       map[letter] = (map[letter] || 0) + 1;
-       return map;
-    }, Object.create(null));
   }
 
   sanitize(word) {
