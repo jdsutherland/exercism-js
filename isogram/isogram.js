@@ -4,13 +4,8 @@ class Isogram {
   }
 
   isIsogram() {
-    let letters = [];
-
-    return this.word.split('').every((letter) => {
-      let result = !letters.includes(letter);
-      letters.push(letter);
-      return result;
-    });
+    const reRepeating = /([^\s]).*\1/ig;
+    return !reRepeating.test(this.word);
   }
 
   sanitize(word) {
