@@ -1,7 +1,7 @@
 class BeerSong {
   sing(...verses) {
     this.validateArguments(verses);
-    return this.verses(verses[0], verses[1]);
+    return this.verses(...verses);
   }
 
   verses(starting, ending = 0) {
