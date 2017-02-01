@@ -20,8 +20,9 @@ class BeerSong {
   }
 
   verse(number) {
-    const bottleNumber = new BottleNumber(number);
-    const nextBottleNumber = new BottleNumber(bottleNumber.successor());
+    const factory = new BottleFactory();
+    const bottleNumber = factory.getBottle(number);
+    const nextBottleNumber = factory.getBottle(bottleNumber.successor());
 
     return `` +
       `${bottleNumber.quantity().capitalize()} ${bottleNumber.container()} of beer on the wall, ` +
@@ -40,43 +41,85 @@ class BeerSong {
   }
 }
 
-class BottleNumber {
+class Bottle {
   constructor(number) {
     this.number = number;
   }
 
   container() {
-    return (this.oneLeft()) ? 'bottle' : 'bottles';
+    return 'bottles';
   }
 
   quantity() {
-    return (this.noneLeft()) ? 'no more' : this.number.toString();
+    return this.number.toString();
   }
 
   action() {
-    return (this.noneLeft()) ? 'Go to the store and buy some more' :
-                               `Take ${this.pronoun()} down and pass it around`;
+    return `Take ${this.pronoun()} down and pass it around`;
   }
 
   pronoun() {
-    return (this.oneLeft()) ? 'it' : 'one';
+    return 'one';
   }
 
   successor() {
-    return (this.noneLeft()) ? 99 : this.number - 1;
+    return this.number - 1;
+  }
+}
+
+class OneBottle extends Bottle {
+  constructor() {
+    super(1);
   }
 
-  oneLeft() {
-    return this.number == 1;
+  container() {
+    return 'bottle';
   }
 
-  noneLeft() {
-    return this.number == 0;
+  pronoun() {
+    return 'it';
+  }
+}
+
+class ZeroBottle extends Bottle {
+  constructor() {
+    super(0);
+  }
+
+  container() {
+    return 'bottles';
+  }
+
+  quantity() {
+    return 'no more';
+  }
+
+  action() {
+    return 'Go to the store and buy some more';
+  }
+
+  successor() {
+    return 99;
+  }
+}
+
+class BottleFactory {
+  getBottle(number) {
+    switch (number) {
+      case 1:
+        return new OneBottle(number);
+        break;
+      case 0:
+        return new ZeroBottle(number);
+        break;
+      default:
+        return new Bottle(number);
+    }
   }
 }
 
 String.prototype.capitalize = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
+  return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
 module.exports = BeerSong;
