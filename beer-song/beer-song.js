@@ -82,10 +82,6 @@ class ZeroBottle extends Bottle {
     super(0);
   }
 
-  container() {
-    return 'bottles';
-  }
-
   quantity() {
     return 'no more';
   }
