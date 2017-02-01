@@ -17,14 +17,14 @@ class BeerSong {
 
   verse(number) {
     const factory = new BottleFactory();
-    const bottleNumber = factory.getBottle(number);
-    const nextBottleNumber = factory.getBottle(bottleNumber.successor());
+    const bottle = factory.getBottle(number);
+    const nextBottle = factory.getBottle(bottle.successor());
 
     return `` +
-      `${bottleNumber.quantity().capitalize()} ${bottleNumber.container()} of beer on the wall, ` +
-      `${bottleNumber.quantity()} ${bottleNumber.container()} of beer.\n` +
-      `${bottleNumber.action()}, ` +
-      `${nextBottleNumber.quantity()} ${nextBottleNumber.container()} of beer on the wall.\n`;
+      `${bottle.quantity().capitalize()} ${bottle.container()} of beer on the wall, ` +
+      `${bottle.quantity()} ${bottle.container()} of beer.\n` +
+      `${bottle.action()}, ` +
+      `${nextBottle.quantity()} ${nextBottle.container()} of beer on the wall.\n`;
   }
 
   validateArguments(...args) {
