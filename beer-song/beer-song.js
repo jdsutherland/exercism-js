@@ -1,14 +1,10 @@
 class BeerSong {
   sing(...verses) {
     this.validateArguments(verses);
-
-    const starting = verses[0];
-    const ending = (verses.length == 2) ? verses[1] : 0;
-
-    return this.verses(starting, ending);
+    return this.verses(verses[0], verses[1]);
   }
 
-  verses(starting, ending) {
+  verses(starting, ending = 0) {
     let verses = '';
 
     while(starting >= ending) {
