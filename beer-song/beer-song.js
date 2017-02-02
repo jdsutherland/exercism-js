@@ -1,121 +1,96 @@
-class BeerSong {
-  constructor() {
-    this.factory = new BottleFactory();
-  }
-
+const BeerSong = module.exports =  {
   sing(...verses) {
     this.validateArguments(...verses);
-    return this.verses(...verses);
-  }
+    return [...this.recite(...verses)].join('\n').trim();
+  },
 
-  verses(starting, ending = 0) {
-    let verses = '';
+  *recite(starting, ending = 0) {
+    let current = starting;
 
-    while(starting >= ending) {
-      verses += this.verse(starting) + '\n';
-      starting--;
+    while(current >= ending) {
+      yield this.verse(current--);
     }
-
-    return verses.trim();
-  }
+  },
 
   verse(number) {
-    const bottle = this.factory.getBottle(number);
-    const nextBottle = this.factory.getBottle(bottle.successor());
+    const bottle = Bottle.getBottle(number);
+    const nextBottle = bottle.successor;
 
-    return `` +
-      `${bottle.quantity().capitalize()} ${bottle.container()} of beer on the wall, ` +
-      `${bottle.quantity()} ${bottle.container()} of beer.\n` +
-      `${bottle.action()}, ` +
-      `${nextBottle.quantity()} ${nextBottle.container()} of beer on the wall.\n`;
-  }
+    return (
+      `${bottle.Quantity} ${bottle.container} of beer on the wall, ` +
+      `${bottle.quantity} ${bottle.container} of beer.\n` +
+      `${bottle.action}, ` +
+      `${nextBottle.quantity} ${nextBottle.container} of beer on the wall.\n`
+      );
+  },
 
   validateArguments(...args) {
     if (args.length > 2) {
-      throw 'Invalid arguments: max 2.';
+      throw new RangeError('Invalid arguments: max 2.');
     }
     if (args.length == 2 && args[0] < args[1]) {
-      throw 'Invalid arguments: must be in decreasing order.';
+      throw new RangeError('Invalid arguments: must be in decreasing order.');
     }
     if (!args.every((arg) => arg >= 0)) {
-      throw 'Invalid arguments: cannot be negative.';
+      throw new RangeError('Invalid arguments: cannot be negative.');
     }
-  }
+  },
 }
 
 class Bottle {
-  constructor(number = 99) {
+  constructor(number = 99, {
+    quantity  = number.toString(),
+    container = 'bottles',
+    pronoun   = 'one',
+    action    = `Take ${pronoun} down and pass it around`,
+  } = {}) {
     this.number = number;
+    this.quantity = quantity;
+    this.container = container;
+    this.pronoun = pronoun;
+    this.action = action;
   }
 
-  quantity() {
-    return this.number.toString();
+  static getBottle(number) {
+    switch (number) {
+      case 1:
+        return new OneBottle();
+      case 0:
+        return new ZeroBottle();
+      default:
+        return new Bottle(number);
+    }
   }
 
-  container() {
-    return 'bottles';
+  get Quantity() {
+    return this.quantity.charAt(0).toUpperCase() + this.quantity.substr(1);
   }
 
-  action() {
-    return `Take ${this.pronoun()} down and pass it around`;
-  }
-
-  pronoun() {
-    return 'one';
-  }
-
-  successor() {
-    return this.number - 1;
+  get successor() {
+    return Bottle.getBottle(this.number - 1);
   }
 }
 
 class OneBottle extends Bottle {
   constructor() {
-    super(1);
-  }
-
-  container() {
-    return 'bottle';
-  }
-
-  pronoun() {
-    return 'it';
+    super(1, {
+      container: 'bottle',
+      pronoun: 'it',
+    });
   }
 }
 
 class ZeroBottle extends Bottle {
   constructor() {
-    super(0);
+    super(0, {
+      quantity: 'no more',
+      action: 'Go to the store and buy some more',
+    });
   }
 
-  quantity() {
-    return 'no more';
+  get successor() {
+    return new Bottle(99);
   }
-
-  action() {
-    return 'Go to the store and buy some more';
-  }
-
-  successor() {
-    return 99;
-  }
-}
-
-class BottleFactory {
-  getBottle(number) {
-    switch (number) {
-      case 1:
-        return new OneBottle;
-      case 0:
-        return new ZeroBottle;
-      default:
-        return new Bottle(number);
-    }
-  }
-}
-
-String.prototype.capitalize = function() {
-  return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
 module.exports = BeerSong;
