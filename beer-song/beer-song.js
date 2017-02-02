@@ -1,4 +1,8 @@
 class BeerSong {
+  constructor() {
+    this.factory = new BottleFactory();
+  }
+
   sing(...verses) {
     this.validateArguments(...verses);
     return this.verses(...verses);
@@ -16,9 +20,8 @@ class BeerSong {
   }
 
   verse(number) {
-    const factory = new BottleFactory();
-    const bottle = factory.getBottle(number);
-    const nextBottle = factory.getBottle(bottle.successor());
+    const bottle = this.factory.getBottle(number);
+    const nextBottle = this.factory.getBottle(bottle.successor());
 
     return `` +
       `${bottle.quantity().capitalize()} ${bottle.container()} of beer on the wall, ` +
@@ -41,16 +44,16 @@ class BeerSong {
 }
 
 class Bottle {
-  constructor(number) {
+  constructor(number = 99) {
     this.number = number;
-  }
-
-  container() {
-    return 'bottles';
   }
 
   quantity() {
     return this.number.toString();
+  }
+
+  container() {
+    return 'bottles';
   }
 
   action() {
@@ -102,11 +105,9 @@ class BottleFactory {
   getBottle(number) {
     switch (number) {
       case 1:
-        return new OneBottle(number);
-        break;
+        return new OneBottle;
       case 0:
-        return new ZeroBottle(number);
-        break;
+        return new ZeroBottle;
       default:
         return new Bottle(number);
     }
