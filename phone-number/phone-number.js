@@ -35,7 +35,8 @@ class ElevenDigitNumber extends PhoneDigits {
   }
 
   get number() {
-    return (this.firstDigitIsOne()) ? this.digits.slice(1) : new InvalidDigitNumber(this.digits).number;
+    return (this.firstDigitIsOne()) ? this.digits.slice(1) :
+      new InvalidDigitNumber(this.digits).number;
   }
 }
 
