@@ -23,6 +23,26 @@ describe('BeerSong', function() {
     expect(song.verse(0)).toEqual(expected);
   });
 
+  it('throws when given too many arguments', function() {
+    var expected = 'Invalid arguments: max 2.';
+    expect(() => song.sing(0, 2, 3)).toThrow(expected);
+  });
+
+  it("throws when given 2 arguments that aren't decreasing order", function() {
+    var expected = 'Invalid arguments: must be in decreasing order.';
+    expect(() => song.sing(1, 8)).toThrow(expected);
+  });
+
+  it("throws when given a negative argument", function() {
+    var expected = 'Invalid arguments: cannot be negative.';
+    expect(() => song.sing(-1)).toThrow(expected);
+  });
+
+  it("throws when given arguments containing a negative value", function() {
+    var expected = 'Invalid arguments: cannot be negative.';
+    expect(() => song.sing(1, -8)).toThrow(expected);
+  });
+
   it('sings several verses', function() {
     var expected = '8 bottles of beer on the wall, 8 bottles of beer.\nTake one down and pass it around, 7 bottles of beer on the wall.\n\n7 bottles of beer on the wall, 7 bottles of beer.\nTake one down and pass it around, 6 bottles of beer on the wall.\n\n6 bottles of beer on the wall, 6 bottles of beer.\nTake one down and pass it around, 5 bottles of beer on the wall.\n'.trim();
     expect(song.sing(8, 6)).toEqual(expected);

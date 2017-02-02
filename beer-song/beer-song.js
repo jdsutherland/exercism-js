@@ -1,6 +1,6 @@
 class BeerSong {
   sing(...verses) {
-    this.validateArguments(verses);
+    this.validateArguments(...verses);
     return this.verses(...verses);
   }
 
@@ -28,11 +28,14 @@ class BeerSong {
   }
 
   validateArguments(...args) {
-    if (args.length > 2 || args.length < 1) {
-      throw "Invalid arguments: max 2.";
+    if (args.length > 2) {
+      throw 'Invalid arguments: max 2.';
     }
     if (args.length == 2 && args[0] < args[1]) {
-      throw "Invalid arguments: must be in decreasing order.";
+      throw 'Invalid arguments: must be in decreasing order.';
+    }
+    if (!args.every((arg) => arg >= 0)) {
+      throw 'Invalid arguments: cannot be negative.';
     }
   }
 }
