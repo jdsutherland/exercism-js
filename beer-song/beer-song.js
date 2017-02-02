@@ -1,4 +1,4 @@
-const BeerSong = module.exports =  {
+const BeerSong = module.exports = {
   sing(...verses) {
     this.validateArguments(...verses);
     return [...this.recite(...verses)].join('\n').trim();
@@ -31,7 +31,7 @@ const BeerSong = module.exports =  {
     if (args.length == 2 && args[0] < args[1]) {
       throw new RangeError('Invalid arguments: must be in decreasing order.');
     }
-    if (!args.every((arg) => arg >= 0)) {
+    if (args.some((arg) => arg < 0)) {
       throw new RangeError('Invalid arguments: cannot be negative.');
     }
   },
