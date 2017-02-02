@@ -24,10 +24,6 @@ class PhoneDigits {
     }
   }
 
-  validDigitLength(len) {
-    return len == 10 || len == 11;
-  }
-
   firstDigitIsOne() {
     return this.digits.charAt(0) === '1';
   }
