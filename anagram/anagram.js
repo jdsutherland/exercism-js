@@ -34,7 +34,7 @@ class Anagram {
   }
 
   subjectSameCandidate(candidate) {
-    return this.subject === candidate.toLowerCase();
+    return this.subject.toLowerCase() === candidate.toLowerCase();
   }
 
   hasSameCharacters(candidate) {
