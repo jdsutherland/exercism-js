@@ -4,15 +4,11 @@ class Anagram {
   }
 
   matches(...candidates) {
-    if (this.hasArrayArguments(candidates[0])) {
+    if (candidates[0] instanceof Array) {
       candidates = candidates[0];
     }
 
     return candidates.filter((candidate) => this.isAnagram(candidate))
-  }
-
-  hasArrayArguments(args) {
-    return typeof args === 'object';
   }
 
   isAnagram(candidate) {
