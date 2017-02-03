@@ -18,7 +18,7 @@ class Anagram {
   isAnagram(candidate) {
     return this.hasMatchingLengths(candidate) &&
       !this.subjectSameCandidate(candidate) &&
-      this.hasSameCharacters(candidate);
+      this.hasMatchingLetters(candidate);
   }
 
   hasMatchingLengths(candidate) {
@@ -29,7 +29,7 @@ class Anagram {
     return this.subject.toLowerCase() === candidate.toLowerCase();
   }
 
-  hasSameCharacters(candidate) {
+  hasMatchingLetters(candidate) {
     const subjectLetters = this.subject.toLowerCase().split('').sort().toString();
     const candidateLetters = candidate.toLowerCase().split('').sort().toString();
 
