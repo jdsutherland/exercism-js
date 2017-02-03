@@ -8,15 +8,7 @@ class Anagram {
       candidates = candidates[0];
     }
 
-    let anagrams = [];
-
-    candidates.forEach((candidate) => {
-      if (this.isAnagram(candidate)) {
-        anagrams.push(candidate);
-      }
-    });
-
-    return anagrams;
+    return candidates.filter((candidate) => this.isAnagram(candidate))
   }
 
   hasArrayArguments(args) {
