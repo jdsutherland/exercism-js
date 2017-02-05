@@ -1,36 +1,5 @@
 const FoodChain = module.exports = {
-  verse(...number) {
-    let lastVerse = 0;
-    debugger;
-
-    if (number.length == 2) {
-      lastVerse = number[0] - 1;
-      number = number[1];
-    } else {
-      number = number[0];
-    }
-
-    debugger;
-    let result = '';
-
-    for (var i = number-1; i < number; i++) {
-      let currentNoun = this.getNoun(i);
-      result += this.knowVerse(currentNoun);
-      result += this.SWALLOW[currentNoun];
-
-      if (currentNoun == 'horse') {
-        return result;
-      }
-
-      for (var j = i; j >= lastVerse; j--) {
-        result += this.repeatedVerse(j);
-      }
-    }
-
-    return result.slice(0, -1);
-  },
-
-  SWALLOW: {
+  FOOD_CHAIN: {
     'fly': "",
     'spider': "It wriggled and jiggled and tickled inside her.\n",
     'bird': "How absurd to swallow a bird!\n",
@@ -41,37 +10,115 @@ const FoodChain = module.exports = {
     'horse': "She's dead, of course!\n",
   },
 
-  getNoun(index) {
-    return Object.keys(this.SWALLOW)[index];
+  getKeyAtIndex(index) {
+    return Object.keys(this.FOOD_CHAIN)[index];
   },
 
-  knowVerse(noun) {
-    return `I know an old lady who swallowed a ${noun}.\n`;
+  getVerseAtKey(key) {
+    return this.FOOD_CHAIN[key];
   },
 
-  repeatedVerse(currentKeyIndex) {
-    let currentNoun = this.getNoun(currentKeyIndex);
-    let previousNoun = this.getNoun(currentKeyIndex - 1);
+  repeatedVerses(rank) {
+    return [...this.reciteRepeatedVerses(rank)].join('\n');
+  },
 
-    let verse = `She swallowed the ${currentNoun} to catch the ${previousNoun}.\n`;
+  *reciteRepeatedVerses(rank) {
+    let current = rank;
 
-    if (currentNoun == 'fly') {
-      return this.flyVerse();
-    } else if (previousNoun == 'spider') {
-      return this.spiderVerse(verse);
-    } else {
-      return verse;
+    while (current >= 0) {
+      const food = Food.getFood(current--);
+      if (food.name === 'horse') break;
+      yield food.repeatedVerse;
     }
   },
 
-  flyVerse() {
-    return `I don't know why she swallowed the fly. Perhaps she'll die.\n\n`
+  verses(...range) {
+    return [...this.reciteRangeOfVerses(...range)].join('\n') + '\n';
   },
 
-  spiderVerse(verse) {
-    return verse.replace('.\n', ' ') + 'that wriggled and jiggled and tickled inside her.\n';
+  *reciteRangeOfVerses(starting, ending = 0) {
+    let current = starting;
+
+    while (current <= ending) {
+      yield this.verse(current++);
+    }
+  },
+
+  verse(number) {
+    const food = Food.getFood(number - 1);
+
+    let result =  (
+      `I know an old lady who swallowed a ${food.name}.\n` +
+      `${food.verse}` +
+      `${this.repeatedVerses(food.rank)}`
+      );
+
+    return result;
   },
 }
 
-debugger;
-FoodChain.verse(1);
+class Food {
+  constructor(rank) {
+    this.rank = rank;
+  }
+
+  static getFood(rank) {
+    const name = FoodChain.getKeyAtIndex(rank);
+    switch (name) {
+      case 'fly':
+        return new Fly(rank);
+      case 'bird':
+        return new Bird(rank);
+      case 'horse':
+        return new Horse(rank);
+      default:
+        return new Food(rank);
+    }
+  }
+
+  get name() {
+    return FoodChain.getKeyAtIndex(this.rank);
+  }
+
+  get verse() {
+    return FoodChain.getVerseAtKey(this.name);
+  }
+
+  get predecessor() {
+    return FoodChain.getKeyAtIndex(this.rank - 1);
+  }
+
+  get repeatedVerse() {
+    return `She swallowed the ${this.name} to catch the ${this.predecessor}.`;
+  }
+}
+
+class Fly extends Food {
+  constructor(rank) {
+    super(rank);
+  }
+
+  get repeatedVerse() {
+    return "I don't know why she swallowed the fly. Perhaps she'll die.\n";
+  }
+}
+
+class Bird extends Food {
+  constructor(rank) {
+    super(rank);
+  }
+
+  get repeatedVerse() {
+    return 'She swallowed the bird to catch the spider that wriggled and jiggled and tickled inside her.';
+  }
+}
+
+class Horse extends Food {
+  constructor(rank) {
+    super(rank);
+  }
+
+  get repeatedVerse() {
+    return '';
+  }
+}

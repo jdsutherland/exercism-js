@@ -1,6 +1,7 @@
 var song = require('./food-chain');
 
 describe('Food Chain', function () {
+
   it('fly', function () {
     var expected = 'I know an old lady who swallowed a fly.\nI don\'t know why she swallowed the fly. Perhaps she\'ll die.\n';
 
@@ -36,7 +37,7 @@ describe('Food Chain', function () {
     expect(song.verse(4)).toEqual(expected);
   });
 
-  xit('dog', function () {
+  it('dog', function () {
     var expected = 'I know an old lady who swallowed a dog.\n' +
       'What a hog, to swallow a dog!\n' +
       'She swallowed the dog to catch the cat.\n' +
@@ -84,7 +85,7 @@ describe('Food Chain', function () {
     expect(song.verse(8)).toEqual(expected);
   });
 
-  xit('multiple verses', function () {
+  it('multiple verses', function () {
     var expected = '';
 
     expected += 'I know an old lady who swallowed a fly.\nI don\'t know why she swallowed the fly. Perhaps she\'ll die.\n\n';
@@ -92,10 +93,10 @@ describe('Food Chain', function () {
       'She swallowed the spider to catch the fly.\n' +
       'I don\'t know why she swallowed the fly. Perhaps she\'ll die.\n\n';
 
-    expect(song.verse(1, 2)).toEqual(expected);
+    expect(song.verses(1, 2)).toEqual(expected);
   });
 
-  xit('the whole song', function () {
+  it('the whole song', function () {
     var expected = '';
 
     expected += 'I know an old lady who swallowed a fly.\nI don\'t know why she swallowed the fly. Perhaps she\'ll die.\n\n';
