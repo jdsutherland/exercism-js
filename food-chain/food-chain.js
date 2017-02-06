@@ -18,7 +18,7 @@ const FoodChain = module.exports = {
     return this.FOOD_CHAIN[key];
   },
 
-  repeatedVerses(rank) {
+  getRepeatedVerses(rank) {
     return [...this.reciteRepeatedVerses(rank)].join('\n');
   },
 
@@ -33,6 +33,7 @@ const FoodChain = module.exports = {
   },
 
   verses(...range) {
+    this.validateArguments(...range);
     return [...this.reciteRangeOfVerses(...range)].join('\n') + '\n';
   },
 
@@ -50,10 +51,22 @@ const FoodChain = module.exports = {
     let result =  (
       `I know an old lady who swallowed a ${food.name}.\n` +
       `${food.verse}` +
-      `${this.repeatedVerses(food.rank)}`
+      `${this.getRepeatedVerses(food.rank)}`
       );
 
     return result;
+  },
+
+  validateArguments(...args) {
+    if (args.some((arg) => arg < 0)) {
+      throw new RangeError('Invalid arguments: cannot be negative.');
+    }
+    if (args.length > 2) {
+      throw new RangeError('Invalid arguments: max 2.');
+    }
+    if (args.length == 2 && args[0] > args[1]) {
+      throw new RangeError('Invalid arguments: must be in increasing order.');
+    }
   },
 }
 

@@ -147,5 +147,24 @@ describe('Food Chain', function () {
     expect(song.verses(1, 8)).toEqual(expected);
   });
 
+  it('throws when given too many arguments', function() {
+    var expected = new RangeError('Invalid arguments: max 2.');
+    expect(() => song.verses(0, 2, 3)).toThrow(expected);
+  });
+
+  it("throws when given 2 arguments that aren't in increasing order", function() {
+    var expected = new RangeError('Invalid arguments: must be in increasing order.');
+    expect(() => song.verses(8, 1)).toThrow(expected);
+  });
+
+  it("throws when given a negative argument", function() {
+    var expected = new RangeError('Invalid arguments: cannot be negative.');
+    expect(() => song.verses(-1)).toThrow(expected);
+  });
+
+  it("throws when given arguments containing a negative value", function() {
+    var expected = new RangeError('Invalid arguments: cannot be negative.');
+    expect(() => song.verses(-8, 1)).toThrow(expected);
+  });
 });
 
