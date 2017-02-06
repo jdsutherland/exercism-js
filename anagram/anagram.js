@@ -8,7 +8,7 @@ class Anagram {
       candidates = candidates[0];
     }
 
-    return candidates.filter((candidate) => this.isAnagram(candidate))
+    return candidates.filter(this.isAnagram, this);
   }
 
   isAnagram(candidate) {
@@ -26,10 +26,11 @@ class Anagram {
   }
 
   hasMatchingLetters(candidate) {
-    const subjectLetters = this.subject.toLowerCase().split('').sort().toString();
-    const candidateLetters = candidate.toLowerCase().split('').sort().toString();
+    return this.getSortedString(this.subject) === this.getSortedString(candidate);
+  }
 
-    return subjectLetters === candidateLetters;
+  getSortedString(string) {
+    return string.toLowerCase().split('').sort().join().replace(/,/g, '');
   }
 }
 
