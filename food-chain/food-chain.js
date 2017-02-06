@@ -48,13 +48,11 @@ const FoodChain = module.exports = {
   verse(number) {
     const food = Food.getFood(number - 1);
 
-    let result =  (
+    return (
       `I know an old lady who swallowed a ${food.name}.\n` +
       `${food.verse}` +
       `${this.getRepeatedVerses(food.rank)}`
       );
-
-    return result;
   },
 
   validateArguments(...args) {
