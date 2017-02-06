@@ -69,8 +69,6 @@ class Food {
         return new Fly(rank);
       case 'bird':
         return new Bird(rank);
-      case 'horse':
-        return new Horse(rank);
       default:
         return new Food(rank);
     }
@@ -110,15 +108,5 @@ class Bird extends Food {
 
   get repeatedVerse() {
     return 'She swallowed the bird to catch the spider that wriggled and jiggled and tickled inside her.';
-  }
-}
-
-class Horse extends Food {
-  constructor(rank) {
-    super(rank);
-  }
-
-  get repeatedVerse() {
-    return '';
   }
 }
