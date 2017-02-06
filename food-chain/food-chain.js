@@ -18,6 +18,16 @@ const FoodChain = module.exports = {
     return this.FOOD_CHAIN[key];
   },
 
+  verse(number) {
+    const food = Food.getFood(number - 1);
+
+    return (
+      `I know an old lady who swallowed a ${food.name}.\n` +
+      `${food.verse}` +
+      `${this.getRepeatedVerses(food.rank)}`
+      );
+  },
+
   getRepeatedVerses(rank) {
     return [...this.reciteRepeatedVerses(rank)].join('\n');
   },
@@ -43,16 +53,6 @@ const FoodChain = module.exports = {
     while (current <= ending) {
       yield this.verse(current++);
     }
-  },
-
-  verse(number) {
-    const food = Food.getFood(number - 1);
-
-    return (
-      `I know an old lady who swallowed a ${food.name}.\n` +
-      `${food.verse}` +
-      `${this.getRepeatedVerses(food.rank)}`
-      );
   },
 
   validateArguments(...args) {
